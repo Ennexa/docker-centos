@@ -1,0 +1,198 @@
+#!/bin/bash
+
+VERSION=$1
+VERSION_PARTS=(${VERSION//./ })
+VERSION_SHORT=${VERSION_PARTS[0]}${VERSION_PARTS[1]}
+
+echo "//===================================================\\"
+echo "|| Building PHP $VERSION                             ||"
+echo "\\===================================================//"
+
+cd /usr/local/src/
+if [ ! -d php-src ]; then
+    git clone https://github.com/php/php-src.git
+    cd php-src
+else
+    cd php-src
+    git fetch --all
+fi
+
+git reset --hard origin/PHP-${VERSION}
+# wget -O php-${VERSION}.tar.gz http://us.php.net/get/php-${VERSION}.tar.gz/from/this/mirror
+# tar xvf php-${VERSION}.tar.gz
+./buildconf --force
+
+mkdir build-${VERSION_SHORT}
+cd build-${VERSION_SHORT}
+
+../configure \
+    --build=x86_64-redhat-linux-gnu \
+    --host=x86_64-redhat-linux-gnu \
+    --program-prefix= \
+    --disable-dependency-tracking \
+    --prefix=/opt/cpanel/ea-php/root/usr \
+    --exec-prefix=/opt/cpanel/ea-php/root/usr \
+    --bindir=/opt/cpanel/ea-php/root/usr/bin \
+    --sbindir=/opt/cpanel/ea-php/root/usr/sbin \
+    --sysconfdir=/opt/cpanel/ea-php/root/etc \
+    --datadir=/opt/cpanel/ea-php/root/usr/share \
+    --includedir=/opt/cpanel/ea-php/root/usr/include \
+    --libdir=/opt/cpanel/ea-php/root/usr/lib64 \
+    --libexecdir=/opt/cpanel/ea-php/root/usr/libexec \
+    --localstatedir=/opt/cpanel/ea-php/root/usr/var \
+    --sharedstatedir=/opt/cpanel/ea-php/root/usr/com \
+    --mandir=/opt/cpanel/ea-php/root/usr/share/man \
+    --infodir=/opt/cpanel/ea-php/root/usr/share/info \
+    --cache-file=../config.cache \
+    --with-libdir=lib64 \
+    --with-config-file-path=/opt/cpanel/ea-php/root/etc \
+    --with-config-file-scan-dir=/opt/cpanel/ea-php/root/etc/php.d \
+    --disable-debug \
+    --with-pic \
+    --without-pear \
+    --with-bz2 \
+    --with-freetype-dir=/usr \
+    --with-png-dir=/usr \
+    --with-xpm-dir=/usr \
+    --enable-gd-native-ttf \
+    --without-gdbm \
+    --with-gettext \
+    --with-iconv \
+    --with-jpeg-dir=/usr \
+    --with-openssl \
+    --with-pcre-regex=/usr \
+    --with-zlib \
+    --with-layout=GNU \
+    --enable-exif \
+    --enable-ftp \
+    --enable-sockets \
+    --with-kerberos \
+    --enable-shmop \
+    --with-libxml-dir=/usr \
+    --with-system-tzdata \
+    --with-mhash \
+    --enable-dtrace \
+    --enable-fpm \
+    --with-fpm-systemd \
+    --libdir=/opt/cpanel/ea-php/root/usr/lib64/php \
+    --without-mysqli \
+    --disable-pdo \
+    --without-gd \
+    --disable-dom \
+    --disable-dba \
+    --without-unixODBC \
+    --disable-opcache \
+    --disable-xmlreader \
+    --disable-xmlwriter \
+    --without-sqlite3 \
+    --disable-phar \
+    --disable-fileinfo \
+    --disable-json \
+    --without-pspell \
+    --disable-wddx \
+    --without-curl \
+    --disable-posix \
+    --disable-xml \
+    --disable-simplexml \
+    --disable-exif \
+    --without-gettext \
+    --without-iconv \
+    --disable-ftp \
+    --without-bz2 \
+    --disable-ctype \
+    --disable-shmop \
+    --disable-sockets \
+    --disable-tokenizer \
+    --disable-sysvmsg \
+    --disable-sysvshm \
+    --disable-sysvsem \
+    --without-gmp \
+    --disable-calendar  \
+    --build=x86_64-redhat-linux-gnu \
+    --host=x86_64-redhat-linux-gnu \
+    --program-prefix= \
+    --disable-dependency-tracking \
+    --prefix=/opt/cpanel/ea-php/root/usr \
+    --exec-prefix=/opt/cpanel/ea-php/root/usr \
+    --bindir=/opt/cpanel/ea-php/root/usr/bin \
+    --sbindir=/opt/cpanel/ea-php/root/usr/sbin \
+    --sysconfdir=/opt/cpanel/ea-php/root/etc \
+    --datadir=/opt/cpanel/ea-php/root/usr/share \
+    --includedir=/opt/cpanel/ea-php/root/usr/include \
+    --libdir=/opt/cpanel/ea-php/root/usr/lib64 \
+    --libexecdir=/opt/cpanel/ea-php/root/usr/libexec \
+    --localstatedir=/opt/cpanel/ea-php/root/usr/var \
+    --sharedstatedir=/opt/cpanel/ea-php/root/usr/com \
+    --mandir=/opt/cpanel/ea-php/root/usr/share/man \
+    --infodir=/opt/cpanel/ea-php/root/usr/share/info \
+    --cache-file=../config.cache \
+    --with-libdir=lib64 \
+    --with-config-file-path=/opt/cpanel/ea-php/root/etc \
+    --with-config-file-scan-dir=/opt/cpanel/ea-php/root/etc/php.d \
+    --disable-debug \
+    --with-pic \
+    --without-pear \
+    --with-bz2 \
+    --with-freetype-dir=/usr \
+    --with-png-dir=/usr \
+    --with-xpm-dir=/usr \
+    --enable-gd-native-ttf \
+    --without-gdbm \
+    --with-gettext \
+    --with-iconv \
+    --with-jpeg-dir=/usr \
+    --with-openssl \
+    --with-pcre-regex=/usr \
+    --with-zlib \
+    --with-layout=GNU \
+    --enable-exif \
+    --enable-ftp \
+    --enable-sockets \
+    --with-kerberos \
+    --enable-shmop \
+    --with-libxml-dir=/usr \
+    --with-system-tzdata \
+    --with-mhash \
+    --enable-dtrace \
+    --enable-fpm \
+    --with-fpm-systemd \
+    --libdir=/opt/cpanel/ea-php${VERSION_SHORT}/root/usr/lib64/php \
+    --without-mysqli \
+    --disable-pdo \
+    --without-gd \
+    --disable-dom \
+    --disable-dba \
+    --without-unixODBC \
+    --disable-opcache \
+    --disable-xmlreader \
+    --disable-xmlwriter \
+    --without-sqlite3 \
+    --disable-phar \
+    --disable-fileinfo \
+    --disable-json \
+    --without-pspell \
+    --disable-wddx \
+    --without-curl \
+    --disable-posix \
+    --disable-xml \
+    --disable-simplexml \
+    --disable-exif \
+    --without-gettext \
+    --without-iconv \
+    --disable-ftp \
+    --without-bz2 \
+    --disable-ctype \
+    --disable-shmop \
+    --disable-sockets \
+    --disable-tokenizer \
+    --disable-sysvmsg \
+    --disable-sysvshm \
+    --disable-sysvsem \
+    --without-gmp \
+    --disable-calendar \
+    build_alias=x86_64-redhat-linux-gnu \
+    host_alias=x86_64-redhat-linux-gnu \
+    CFLAGS="-O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector-strong --param=ssp-buffer-size=4 -grecord-gcc-switches -specs=/usr/lib/rpm/redhat/redhat-hardened-cc1 -m64 -mtune=generic -fno-strict-aliasing -Wno-pointer-sign" \
+    CXXFLAGS="-O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector-strong --param=ssp-buffer-size=4 -grecord-gcc-switches -specs=/usr/lib/rpm/redhat/redhat-hardened-cc1 -m64 -mtune=generic"
+
+make install
