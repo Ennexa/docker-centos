@@ -19,7 +19,8 @@ RUN mkdir /lib/x86_64-linux-gnu/ && ln -s /lib/lib64/libsystemd-daemon.so.0 /lib
 ADD build-php /usr/bin/build-php
 RUN chmod 755 /usr/bin/build-php
 
-RUN /usr/bin/build-php 7.0.15 && \
-    /usr/bin/build-php 7.1.0
+RUN /usr/bin/build-php 7.0.30 && \
+    /usr/bin/build-php 7.1.17 && \
+    /usr/bin/build-php 7.2.5
 
 
